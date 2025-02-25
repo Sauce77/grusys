@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogIn</title>
+</head>
+<body>
+    <h1>Bienvenido a GRUsys!</h1>
+    <form method="POST">
+        {{ formulario.csrf_token }}
+        {{ formulario.username.label }} {{ formulario.username }}
+        {{ formulario.password.label }} {{ formulario.password }}
+        {{ formulario.enviar }}
+    </form>
+</body>
+</html>
