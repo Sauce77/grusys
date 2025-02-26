@@ -7,11 +7,6 @@
 </head>
 <body>
     <h1>Bienvenido a GRUsys!</h1>
-    <form method="POST">
-        {{ formulario.csrf_token }}
-        {{ formulario.username.label }} {{ formulario.username }}
-        {{ formulario.password.label }} {{ formulario.password }}
-        {{ formulario.enviar }}
-    </form>
+    <a href="{{ url_for('login_user') }}">LogIn</a>
 </body>
 </html>
