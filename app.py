@@ -23,7 +23,9 @@ def root():
             
             response = requests.post(url, json=datos_json)
             response.raise_for_status()
-            return jsonify(response.json()), response.status_code
+            
+            return render_template("user_info.html", data=response.json()), response.status_code
+
         except requests.exceptions.RequestException as e:
             return jsonify({'error': str(e)}), response.status_code if hasattr(response, 'status_code') else 500
 

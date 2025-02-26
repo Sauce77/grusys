@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvenido {{ data.username }}</title>
+    <title>Bienvenido! </title>
 </head>
 <body>
     <h1>Informacion de usuario</h1>
-    <p>Usuario: {{ data.username }}</p>
-    <p>JWT: {{data.Token }}</p>
+    
+    <p>Usuario: {{ data.user.username }}</p>
+    <p>Nombre: {{ data.user.first_name }}</p>
 </body>
 </html>
