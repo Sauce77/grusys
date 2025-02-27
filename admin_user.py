@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template
+from flask import Blueprint,render_template,request
 
 from forms import SubirExtraccionForm
 
@@ -16,6 +16,8 @@ def subir_extraccion():
         Solicita la extraccion para cargar los usuarios.
         Valida un excel y envia la peticion en JSON al API.
     """
-    formulario = SubirExtraccionForm()
+    form=SubirExtraccionForm()
 
-    return render_template("subir_extraccion.html", formulario=formulario)
+    if form.validate_on_submit():
+        return "Archivo listo!"
+    return render_template("subir_extraccion.html", form=form)

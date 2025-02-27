@@ -7,9 +7,10 @@
 </head>
 <body>
     <h1>Subir una extraccion</h1>
-    <form method="POST">
-        {{ formulario.file.label }} {{ formulario.file }}
-        {{ formulario.enviar }}
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        {{ form.file.label }} {{ form.file }}
+        {{ form.enviar }}
     </form>
 </body>
 </html>
