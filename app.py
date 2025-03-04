@@ -27,7 +27,7 @@ def login_user():
         Autentificar un usuario medinate username, password.
         Retorna: JWT
     """
-    formulario = LoginForm()
+    form= LoginForm()
 
     url = API_URL+"accounts/login/"
 
@@ -45,7 +45,7 @@ def login_user():
         except requests.exceptions.RequestException as e:
             return jsonify({'error': str(e)}), response.status_code if hasattr(response, 'status_code') else 500
 
-    return render_template('login.html', formulario=formulario)
+    return render_template('login.html', form=form)
 
 if __name__ == "__main__":
     app.run(debug=True)

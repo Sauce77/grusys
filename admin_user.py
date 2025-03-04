@@ -1,6 +1,8 @@
-from flask import Blueprint,render_template,request
-
+from flask import Blueprint,render_template,request, jsonify
 from forms import SubirExtraccionForm
+from io import BytesIO
+
+from scripts.extracciones import archivo_json
 
 routes_admin_user = Blueprint("admins", __name__)
 
@@ -19,5 +21,8 @@ def subir_extraccion():
     form=SubirExtraccionForm()
 
     if form.validate_on_submit():
-        return "Archivo listo!"
+
+        archivo = form.file.data
+        res_json, messages = archivo_json(archivo=archivo.read()) # verificar problema del formato
+        return jsonify(res_json)
     return render_template("subir_extraccion.html", form=form)

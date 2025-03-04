@@ -8,10 +8,10 @@
 <body>
     <h1>Bienvenido a GRUsys!</h1>
     <form method="POST">
-        {{ formulario.csrf_token }}
-        {{ formulario.username.label }} {{ formulario.username }}
-        {{ formulario.password.label }} {{ formulario.password }}
-        {{ formulario.enviar }}
+        {{ form.csrf_token }}
+        {{ form.username.label }} {{ form.username }}
+        {{ form.password.label }} {{ form.password }}
+        {{ form.enviar }}
     </form>
 </body>
 </html>
