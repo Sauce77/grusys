@@ -1,10 +1,10 @@
-from flask import Blueprint,render_template,request, current_app, redirect
+from flask import Blueprint,render_template,request, current_app, redirect, jsonify
 import os
 from werkzeug.utils import secure_filename
 
 from forms import SubirExtraccionForm
 from scripts.extracciones import archivo_json
-from scripts.uploads import sobrepasa_archivo_uploads,limitar_archivos_uploads
+from scripts.uploads import sobrepasa_archivo_uploads,limitar_archivos_uploads,archivo_reciente
 
 routes_admin_user = Blueprint("admins", __name__)
 
@@ -35,6 +35,10 @@ def subir_extraccion():
             filename = secure_filename(file.filename)
             file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
             file.save(file_path)
+
+            data_json, messages = archivo_json(file_path)
+
+            return jsonify(data_json)
 
         if sobrepasa_archivo_uploads(current_app.config['UPLOAD_FOLDER']):
             limitar_archivos_uploads(current_app.config['UPLOAD_FOLDER'])

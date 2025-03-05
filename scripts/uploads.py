@@ -38,3 +38,20 @@ def limitar_archivos_uploads(carpeta):
     while len(archivos) > LIMITE_UPLOADS:
         archivo_a_eliminar = archivos.pop(0)
         os.remove(archivo_a_eliminar)
+
+
+def archivo_reciente(carpeta):
+    """
+        Retorna la ruta del archivo mas reciente en la carpeta
+        indicada.
+    """
+    archivos = []
+    for f in os.listdir(carpeta):
+        if os.path.isfile(os.path.join(carpeta, f)):
+            # se anade el archivo a la lista
+            archivos.append(os.path.join(carpeta, f))
+
+    # ordenar por tiempo de modificacion
+    archivos.sort(key=os.path.getmtime)
+
+    return archivos[-1]
