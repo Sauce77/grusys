@@ -10,6 +10,10 @@ API_URL = "https://grc-api.onrender.com/"
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "Famous" # os.environ.get("SECRET_KEY")
+app.config['UPLOAD_FOLDER'] = 'uploads'
+
+if not os.path.exists(app.config['UPLOAD_FOLDER']):
+    os.makedirs(app.config['UPLOAD_FOLDER'])
 
 # registrar modulos de rutas
 app.register_blueprint(routes_admin_user, url_prefix='/admins')

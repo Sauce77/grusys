@@ -1,7 +1,8 @@
-from flask import Blueprint,render_template,request, jsonify
-from forms import SubirExtraccionForm
-from io import BytesIO
+from flask import Blueprint,render_template,request, current_app, redirect
+import os
+from werkzeug.utils import secure_filename
 
+from forms import SubirExtraccionForm
 from scripts.extracciones import archivo_json
 
 routes_admin_user = Blueprint("admins", __name__)
@@ -20,9 +21,18 @@ def subir_extraccion():
     """
     form=SubirExtraccionForm()
 
-    if form.validate_on_submit():
+    if request.method == "POST":
+        if 'file' not in request.files:
+            return redirect(request.url)
+        
+        file = request.files['file']
 
-        archivo = form.file.data
-        res_json, messages = archivo_json(archivo=archivo.read()) # verificar problema del formato
-        return jsonify(res_json)
-    return render_template("subir_extraccion.html", form=form)
+        if file.filename == '':
+            return redirect(request.url)
+        
+        if file:
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
+
+    return render_template('subir_extraccion.html', form=form)
