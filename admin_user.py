@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 
 from forms import SubirExtraccionForm
 from scripts.extracciones import archivo_json
+from scripts.uploads import sobrepasa_archivo_uploads,limitar_archivos_uploads
 
 routes_admin_user = Blueprint("admins", __name__)
 
@@ -34,5 +35,8 @@ def subir_extraccion():
             filename = secure_filename(file.filename)
             file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
             file.save(file_path)
+
+        if sobrepasa_archivo_uploads(current_app.config['UPLOAD_FOLDER']):
+            limitar_archivos_uploads(current_app.config['UPLOAD_FOLDER'])
 
     return render_template('subir_extraccion.html', form=form)
