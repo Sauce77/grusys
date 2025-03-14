@@ -1,5 +1,6 @@
-from flask import Blueprint,render_template,request, current_app, redirect, jsonify
 import os
+import requests
+from flask import Blueprint,render_template,request, current_app, redirect, jsonify, session
 from werkzeug.utils import secure_filename
 
 from forms import SubirExtraccionForm
@@ -38,7 +39,20 @@ def subir_extraccion():
 
             data_json, messages = archivo_json(file_path)
 
-            return jsonify(data_json)
+            # cabecera utilizada para la peticion
+            headers = {
+                'Authorization': f'Token {session.get("Token")}',
+                'Content-Type': 'application/json'
+            }
+
+            url = API_URL + "insertar/"
+            response = requests.post(url, headers=headers, json=data_json)
+            response.raise_for_status()
+            
+            if response.status_code == 200:
+                return session.get("Token"), response.status_code
+            
+            return "Server Error", response.status_code
 
         if sobrepasa_archivo_uploads(current_app.config['UPLOAD_FOLDER']):
             limitar_archivos_uploads(current_app.config['UPLOAD_FOLDER'])

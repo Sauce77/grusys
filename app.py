@@ -1,7 +1,7 @@
 import os
 import requests
 import json
-from flask import Flask, render_template, jsonify, request, redirect
+from flask import Flask, render_template, jsonify, request, redirect, session
 from forms import LoginForm
 
 from admin_user import routes_admin_user
@@ -33,7 +33,7 @@ def login_user():
     """
     form= LoginForm()
 
-    url = API_URL+"accounts/login/"
+    url = API_URL + "accounts/login/"
 
     if request.method == 'POST':
     # Lógica para peticiones POST
@@ -43,6 +43,10 @@ def login_user():
             
             response = requests.post(url, json=datos_json)
             response.raise_for_status()
+
+            login_json = response.json()
+
+            session["Token"] = login_json["token"]
             
             return render_template("user_info.html", data=response.json()), response.status_code
 
