@@ -15,6 +15,13 @@ API_URL = "https://grc-api.onrender.com/extraccion/"
 def root():
     return "Hola"
 
+@routes_admin_user.route("/registros", methods=["GET","POST"])
+def mostrar_todos_registros():
+    """
+        Muestra todos los registros de la base de datos
+    """
+    return "Todos"
+
 @routes_admin_user.route("/extraccion", methods=["GET","POST"])
 def subir_extraccion():
     """
@@ -50,10 +57,10 @@ def subir_extraccion():
             response.raise_for_status()
             
             if response.status_code == 200:
-                return session.get("Token"), response.status_code
+                return "Informacion enviada!"
             
             return "Server Error", response.status_code
-
+            
         if sobrepasa_archivo_uploads(current_app.config['UPLOAD_FOLDER']):
             limitar_archivos_uploads(current_app.config['UPLOAD_FOLDER'])
 
