@@ -20,7 +20,18 @@ def mostrar_todos_registros():
     """
         Muestra todos los registros de la base de datos
     """
-    return "Todos"
+    url = API_URL + "all/"
+
+    # cabecera utilizada para la peticion
+    headers = {
+        'Authorization': f'Token {session.get("Token")}'
+    }
+
+    respuesta = requests.get(url, headers=headers)
+    respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
+
+    datos_json = respuesta.json()
+    return datos_json
 
 @routes_admin_user.route("/extraccion", methods=["GET","POST"])
 def subir_extraccion():
