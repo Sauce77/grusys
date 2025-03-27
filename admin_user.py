@@ -55,8 +55,8 @@ def subir_extraccion():
             file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
             file.save(file_path)
 
-            data_json, messages = archivo_json(file_path)
-
+            extraccion_json, messages = archivo_json(file_path)
+        
             # cabecera utilizada para la peticion
             headers = {
                 'Authorization': f'Token {session.get("Token")}',
@@ -64,13 +64,13 @@ def subir_extraccion():
             }
 
             url = API_URL + "insertar/"
-            response = requests.post(url, headers=headers, json=data_json)
-            response.raise_for_status()
+            response = requests.post(url, headers=headers, json=extraccion_json)
+            # response.raise_for_status()
             
             if response.status_code == 200:
-                return "Informacion enviada!"
+                return response.content
             
-            return "Server Error", response.status_code
+            return response.content
             
         if sobrepasa_archivo_uploads(current_app.config['UPLOAD_FOLDER']):
             limitar_archivos_uploads(current_app.config['UPLOAD_FOLDER'])
