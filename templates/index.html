@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LogIn</title>
+    <title>Inicio</title>
+    {% include "_bootstrap.html" %}
 </head>
-<body>
-    <h1>Bienvenido a GRUsys!</h1>
-    <a href="{{ url_for('login_user') }}">LogIn</a>
+<body class="bg-light">
+    {% include "_navbar.html" %}
+    <div class="container mt-3">
+        <h1>GRU!</h1>
+    </div>
 </body>
 </html>

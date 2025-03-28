@@ -1,7 +1,7 @@
 import os
 import requests
 import json
-from flask import Flask, render_template, jsonify, request, redirect, session
+from flask import Flask, render_template, jsonify, request, redirect, session, url_for
 from forms import LoginForm
 
 from admin_user import routes_admin_user
@@ -19,11 +19,12 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
 app.register_blueprint(routes_admin_user, url_prefix='/admins')
 
 @app.route("/" , methods=["GET","POST"])
-def root():
+def index():
     """
         Muestra landing page de aplicacion
     """
-    return render_template("index.html")
+    user = session.get("user")
+    return render_template("index.html", auth=user)
 
 @app.route("/login", methods=["GET","POST"])
 def login_user():
@@ -46,14 +47,19 @@ def login_user():
 
             login_json = response.json()
 
-            session["Token"] = login_json["token"]
+            session["user"] = login_json
             
-            return render_template("user_info.html", data=response.json()), response.status_code
+            return redirect(url_for('index'))
 
         except requests.exceptions.RequestException as e:
             return jsonify({'error': str(e)}), response.status_code if hasattr(response, 'status_code') else 500
 
     return render_template('login.html', form=form)
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect(url_for('index'))
 
 if __name__ == "__main__":
     app.run(debug=True)

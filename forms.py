@@ -9,9 +9,9 @@ class LoginForm(FlaskForm):
         Utilizado para verificar que un usuario ya esta registrado.
         Return: el Token del usuario si existe.
     """
-    username = wtf.StringField('Cuenta Red')
-    password = wtf.PasswordField('Password')
-    enviar = wtf.SubmitField('Enviar') 
+    username = wtf.StringField(render_kw={"class":"form-control"})
+    password = wtf.PasswordField(render_kw={"class":"form-control"})
+    enviar = wtf.SubmitField('Enviar', render_kw={"class":"btn btn-primary"}) 
 
 class SubirExtraccionForm(FlaskForm):
     """

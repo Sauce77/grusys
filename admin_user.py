@@ -24,7 +24,7 @@ def mostrar_todos_registros():
 
     # cabecera utilizada para la peticion
     headers = {
-        'Authorization': f'Token {session.get("Token")}'
+        'Authorization': f'Token {session.get("user")["token"]}'
     }
 
     respuesta = requests.get(url, headers=headers)
@@ -59,13 +59,12 @@ def subir_extraccion():
         
             # cabecera utilizada para la peticion
             headers = {
-                'Authorization': f'Token {session.get("Token")}',
+                'Authorization': f'Token {session.get("user")["token"]}',
                 'Content-Type': 'application/json'
             }
 
             url = API_URL + "insertar/"
             response = requests.post(url, headers=headers, json=extraccion_json)
-            # response.raise_for_status()
             
             if response.status_code == 200:
                 return response.content
