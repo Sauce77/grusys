@@ -1,6 +1,6 @@
 import os
 import requests
-from flask import Blueprint,render_template,request, current_app, redirect, jsonify, session
+from flask import Blueprint,render_template,request, current_app, redirect, jsonify, session, url_for
 from werkzeug.utils import secure_filename
 
 from forms import SubirExtraccionForm
@@ -20,11 +20,16 @@ def mostrar_todos_registros():
     """
         Muestra todos los registros de la base de datos
     """
+    auth = session.get("user")
+
+    if not auth:
+        return redirect(url_for('login_user'))
+
     url = API_URL + "all/"
 
     # cabecera utilizada para la peticion
     headers = {
-        'Authorization': f'Token {session.get("user")["token"]}'
+        'Authorization': f'Token {auth["token"]}'
     }
 
     respuesta = requests.get(url, headers=headers)
@@ -39,6 +44,11 @@ def subir_extraccion():
         Solicita la extraccion para cargar los usuarios.
         Valida un excel y envia la peticion en JSON al API.
     """
+    auth = session.get("user")
+
+    if not auth:
+        return redirect(url_for('login_user'))
+
     form=SubirExtraccionForm()
 
     if request.method == "POST":
@@ -59,7 +69,7 @@ def subir_extraccion():
         
             # cabecera utilizada para la peticion
             headers = {
-                'Authorization': f'Token {session.get("user")["token"]}',
+                'Authorization': f'Token {auth["token"]}',
                 'Content-Type': 'application/json'
             }
 
@@ -74,4 +84,4 @@ def subir_extraccion():
         if sobrepasa_archivo_uploads(current_app.config['UPLOAD_FOLDER']):
             limitar_archivos_uploads(current_app.config['UPLOAD_FOLDER'])
 
-    return render_template('subir_extraccion.html', form=form)
+    return render_template('subir_extraccion.html', form=form, auth=auth)

@@ -1,16 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subir Extraccion</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  {% include "_bootstrap.html" %}
 </head>
 <body>
-    <h1>Subir una extraccion</h1>
-    <form method="POST" enctype="multipart/form-data">
-        {{ form.csrf_token }}
-        {{ form.file.label }} {{ form.file }}
-        {{ form.enviar }}
-    </form>
+
+    {% include "_navbar.html" %}
+
+    <div class="container mt-5">
+
+      <div class="card w-50 mx-auto">
+        <div class="card-body">
+          <h5 class="card-title">Subir Extraccion</h5>
+            <form method="post" enctype="multipart/form-data">
+              {{ form.csrf_token }}
+              <div class="form-group">
+                  <label for="documento">Selecciona un documento:</label>
+                  {{ form.file }}
+              {{ form.enviar }}
+            </form>
+        </div>
+      </div>
+    </div>
+  
 </body>
 </html>
