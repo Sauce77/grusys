@@ -38,6 +38,31 @@ def mostrar_todos_registros():
     datos_json = respuesta.json()
     return render_template("registros.html", auth=auth, data=datos_json)
 
+
+@routes_admin_user.route("/registros/<app>")
+def mostrar_app_registros(app):
+    """
+        Muestra usuarios separados por aplicativo.
+    """
+
+    auth = session.get("user")
+
+    if not auth:
+        return redirect(url_for('login_user'))
+
+    url = API_URL + "registros/" + app
+
+    # cabecera utilizada para la peticion
+    headers = {
+        'Authorization': f'Token {auth["token"]}'
+    }
+
+    respuesta = requests.get(url, headers=headers)
+    respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
+
+    datos_json = respuesta.json()
+    return render_template("registros.html", auth=auth, data=datos_json)
+
 @routes_admin_user.route("/extraccion", methods=["GET","POST"])
 def subir_extraccion():
     """
