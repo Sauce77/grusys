@@ -16,7 +16,7 @@
     {% include "_offcanvas.html" %}
 
     <div class="container w-75">
-
+      <h2 class="my-3">{{ titulo }}</h2>
       <table id="tablaExtraccion" class="display">
           <thead>
               <tr>
@@ -57,7 +57,13 @@
             { data: 'responsable' },
             { data: 'requiere_acceso' },
             { data: 'comentarios' }
-          ]
+          ],
+          rowCallback: function(row, data) {
+            // Ejemplo: colorear la fila si el valor de la columna 'estado' es 'Pendiente'
+            if (data.en_extraccion === false ) { // Asumiendo que 'estado' está en la tercera columna (índice 2)
+              $(row).css('background-color', 'yellow');
+            }
+          }
         });
       });
     </script>
