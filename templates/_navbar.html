@@ -7,10 +7,11 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav">
 
-        <!-- Extraccion -->
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{{ url_for('admins.subir_extraccion') }}">Extraccion</a>
-        </li>
+        <li class="nav-item"><!-- menu -->
+          <a class="nav-link active" data-bs-toggle="offcanvas" href="#offcanvasMenu" role="button" aria-controls="offcanvasExample">
+            Menu
+          </a>
+        </li><!-- boton offcanvas menu -->
 
         <!-- Usuario -->
         {% if auth %}
@@ -27,7 +28,9 @@
             <a class="nav-link active" aria-current="page" href="{{ url_for('login_user') }}">Iniciar Sesion</a>
           </li>
         {% endif %}
+
+        
       </ul>
-    </div>
+    </div><!-- fin navbar -->
   </div>
 </nav>
