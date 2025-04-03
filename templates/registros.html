@@ -17,6 +17,20 @@
 
     <div class="container w-75">
       <h2 class="my-3">{{ titulo }}</h2>
+
+      <!-- Dropdown aplicativos -->
+      <div class="dropdown my-2">
+        <a class="btn btn-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Aplicativo
+        </a>
+      
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Action</a></li>
+          <li><a class="dropdown-item" href="#">Another action</a></li>
+          <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul>
+      </div><!-- fin dropdown aplicativos -->
+
       <table id="tablaExtraccion" class="display">
           <thead>
               <tr>
@@ -62,6 +76,9 @@
             // Ejemplo: colorear la fila si el valor de la columna 'estado' es 'Pendiente'
             if (data.en_extraccion === false ) { // Asumiendo que 'estado' está en la tercera columna (índice 2)
               $(row).css('background-color', 'yellow');
+            }
+            else if(data.requiere_acceso === "NO"){
+              $(row).css('background-color', 'red');
             }
           }
         });

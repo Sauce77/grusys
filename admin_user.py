@@ -61,7 +61,7 @@ def mostrar_app_registros(app):
     respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
 
     datos_json = respuesta.json()
-    return render_template("registros.html", auth=auth, data=datos_json)
+    return render_template("registros.html", auth=auth, data=datos_json, titulo=f"Registros {app}")
 
 @routes_admin_user.route("/extraccion", methods=["GET","POST"])
 def subir_extraccion():
