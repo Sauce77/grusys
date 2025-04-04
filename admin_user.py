@@ -25,18 +25,24 @@ def mostrar_todos_registros():
     if not auth:
         return redirect(url_for('login_user'))
 
-    url = API_URL + "all/"
-
     # cabecera utilizada para la peticion
     headers = {
         'Authorization': f'Token {auth["token"]}'
     }
 
+    # peticion para registros
+    url = API_URL + "registros/"
     respuesta = requests.get(url, headers=headers)
     respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
+    registros_json = respuesta.json()
 
-    datos_json = respuesta.json()
-    return render_template("registros.html", auth=auth, data=datos_json, titulo="Todos los registros")
+    # peticion para aplicativos
+    url = API_URL + "apps"
+    respuesta = requests.get(url, headers=headers)
+    respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
+    apps_json = respuesta.json()
+
+    return render_template("registros.html", auth=auth, registros=registros_json, apps=apps_json, titulo="Todos los registros")
 
 
 @routes_admin_user.route("/registros/<app>")
@@ -50,18 +56,24 @@ def mostrar_app_registros(app):
     if not auth:
         return redirect(url_for('login_user'))
 
-    url = API_URL + "registros/" + app
-
     # cabecera utilizada para la peticion
     headers = {
         'Authorization': f'Token {auth["token"]}'
     }
 
+    # peticion para registros
+    url = API_URL + "registros/" + app
     respuesta = requests.get(url, headers=headers)
     respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
+    registros_json = respuesta.json()
 
-    datos_json = respuesta.json()
-    return render_template("registros.html", auth=auth, data=datos_json, titulo=f"Registros {app}")
+    # peticion para aplicativos
+    url = API_URL + "apps"
+    respuesta = requests.get(url, headers=headers)
+    respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
+    apps_json = respuesta.json()
+
+    return render_template("registros.html", auth=auth, registros=registros_json, apps=apps_json, titulo=f"Registros {app}")
 
 @routes_admin_user.route("/extraccion", methods=["GET","POST"])
 def subir_extraccion():

@@ -25,9 +25,10 @@
         </a>
       
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
+          <li><a class="dropdown-item" href="{{ url_for('admins.mostrar_todos_registros') }}">Todos</a></li>
+          {% for app in apps %}
+            <li><a class="dropdown-item" href="{{ url_for('admins.mostrar_app_registros',app=app.nombre) }}">{{ app.nombre }}</a></li>
+          {% endfor %}
         </ul>
       </div><!-- fin dropdown aplicativos -->
 
@@ -54,7 +55,7 @@
 
     <!-- datatables -->
     <script>
-      var datosJSON = '{{ data | tojson | safe }}';
+      var datosJSON = '{{ registros | tojson | safe }}';
       var datosJavaScript = JSON.parse(datosJSON);
 
       $(document).ready(function() {
