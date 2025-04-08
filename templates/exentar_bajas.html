@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exentar Bajas</title>
+    {% include "_bootstrap.html" %}
+</head>
+<body>
+    {% include "_navbar.html" %}
+    {% include "_offcanvas.html" %}
+
+    <div class="container mt-5">
+
+        <h2>Cuentas Exentas</h2>
+
+        <!-- Form exentar bajas -->
+        <div class="card w-50 mx-auto">
+          <div class="card-body">
+              <form method="post" enctype="multipart/form-data">
+                {{ form.csrf_token }}
+                <div class="form-group">
+                    <label for="documento">Selecciona un documento:</label>
+                    {{ form.file }}
+                {{ form.enviar }}
+              </form>
+          </div>
+        </div>
+      </div>
+
+
+</body>
+</html>

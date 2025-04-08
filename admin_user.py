@@ -122,3 +122,18 @@ def subir_extraccion():
             limitar_archivos_uploads(current_app.config['UPLOAD_FOLDER'])
 
     return render_template('subir_extraccion.html', form=form, auth=auth)
+
+@routes_admin_user.route("/exentar", methods=["GET","POST"])
+def exentar_bajas():
+    """
+        Recibe un archivo de word con apps y cuentas. Se modifica el valor
+        exenta_bajas a true.
+    """
+    auth = session.get("user")
+
+    if not auth:
+        return redirect(url_for('login_user'))
+
+    form=SubirExtraccionForm()
+
+    return render_template('exentar_bajas.html', form=form, auth=auth)
