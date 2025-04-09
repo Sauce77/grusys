@@ -88,7 +88,7 @@ def serializar_registro(registro):
 
 def archivo_json(ruta):
     """
-        Convierte el archivo validado a un formato json.
+        Convierte el archivo de extraccion validado a un formato json.
     """
     messages = [] # se enlistan los posibles problemas al leer el archivo
     data_excel = [] # se enlista la informacion contenida en el archivo
@@ -118,4 +118,3 @@ def archivo_json(ruta):
     messages.append("Archivo procesado!")
 
     return data_excel, messages
-        

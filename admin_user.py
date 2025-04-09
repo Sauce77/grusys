@@ -5,7 +5,7 @@ from werkzeug.utils import secure_filename
 
 from forms import SubirExtraccionForm
 from scripts.extracciones import archivo_json
-from scripts.uploads import sobrepasa_archivo_uploads,limitar_archivos_uploads,archivo_reciente
+from scripts.uploads import subir_archivo
 
 routes_admin_user = Blueprint("admins", __name__)
 
@@ -94,13 +94,14 @@ def subir_extraccion():
         
         file = request.files['file']
 
-        if file.filename == '':
-            return redirect(request.url)
+        #if file.filename == '':
+        #return redirect(request.url)
+
+        # obtenemos la ruta del archivo
+        file_path = subir_archivo(file, 'extracciones')
         
-        if file:
-            filename = secure_filename(file.filename)
-            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-            file.save(file_path)
+        # si la direccion es valida
+        if file_path != "No Valid.":
 
             extraccion_json, messages = archivo_json(file_path)
         
@@ -118,8 +119,7 @@ def subir_extraccion():
             
             return response.content
             
-        if sobrepasa_archivo_uploads(current_app.config['UPLOAD_FOLDER']):
-            limitar_archivos_uploads(current_app.config['UPLOAD_FOLDER'])
+        # limitar_archivos_uploads(current_app.config['UPLOAD_FOLDER'])
 
     return render_template('subir_extraccion.html', form=form, auth=auth)
 
