@@ -71,7 +71,7 @@
             { data: 'ultimo_acceso' },
             { data: 'responsable' },
             { data: 'requiere_acceso' },
-            { data: 'comentarios' }
+            { data: 'comentarios' },
           ],
           rowCallback: function(row, data) {
             // Ejemplo: colorear la fila si el valor de la columna 'estado' es 'Pendiente'
@@ -80,6 +80,9 @@
             }
             else if(data.requiere_acceso === "NO"){
               $(row).css('background-color', 'red');
+            }
+            else if(data.exenta_baja === true){
+              $(row).css('background-color', 'lightblue');
             }
           }
         });

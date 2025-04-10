@@ -6,8 +6,13 @@ import os
 
 from . import expreg
 
+# ----------- nombres de columnas -----------------------
+
+columnas_para_cuentas_exentas = ["app", "usuario"]
 columnas_para_extraccion = ["nombre","usuario","app","responsable"]
 columnas_para_json = ["app","responsable","perfil","nombre","usuario","estatus","comentarios"]
+
+# -------------------------------------------------------
 
 def columnas_lower(columnas):
     """
@@ -86,7 +91,7 @@ def serializar_registro(registro):
 
     return data
 
-def archivo_json(ruta):
+def archivo_extraccion_json(ruta):
     """
         Convierte el archivo de extraccion validado a un formato json.
     """
@@ -110,6 +115,46 @@ def archivo_json(ruta):
             # obtenemos los campos para cada fila
             for index,fila in df.iterrows():
                 data_excel.append(serializar_registro(fila))
+
+        else:
+            # en caso de que faltaran columnas en la hoja
+            messages.append(f"{nombre_hoja} no ha podido ser convertida. Verifique el formato utilizado.")
+
+    messages.append("Archivo procesado!")
+
+    return data_excel, messages
+
+def archivo_exentas_json(ruta):
+    """
+        Recibe la ruta del archivo para cuentas excentas.
+        Serializa el contenido para JsON.
+    """
+    messages = [] # se enlistan los posibles problemas al leer el archivo
+    data_excel = [] # se enlista la informacion contenida en el archivo
+
+    ruta = os.path.abspath(ruta)
+
+    archivo = openpyxl.load_workbook(ruta, read_only=True)
+
+    for nombre_hoja in archivo.sheetnames:
+        # para cada hoja en el archivo
+
+        df = pd.read_excel(ruta, sheet_name=nombre_hoja)
+        
+        columnas = df.columns # obtiene el nombre de columnas de la hoja
+
+        if comprobar_columnas(columnas, columnas_para_cuentas_exentas):
+            # en caso de que el nombre de las columnas coincida
+            
+            # obtenemos los campos para cada fila
+            for index,fila in df.iterrows():
+                # datos de cuenta serializados
+                datos_cuenta = {
+                    "app": fila["APP"],
+                    "usuario": fila["Usuario"]
+                }
+                # agregamos los datos de la cuenta
+                data_excel.append(datos_cuenta)
 
         else:
             # en caso de que faltaran columnas en la hoja

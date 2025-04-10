@@ -4,7 +4,7 @@ from flask import Blueprint,render_template,request, current_app, redirect, json
 from werkzeug.utils import secure_filename
 
 from forms import SubirExtraccionForm
-from scripts.extracciones import archivo_json
+from scripts.extracciones import archivo_extraccion_json, archivo_exentas_json
 from scripts.uploads import subir_archivo
 
 routes_admin_user = Blueprint("admins", __name__)
@@ -89,21 +89,20 @@ def subir_extraccion():
     form=SubirExtraccionForm()
 
     if request.method == "POST":
-        if 'file' not in request.files:
-            return redirect(request.url)
-        
-        file = request.files['file']
 
-        #if file.filename == '':
-        #return redirect(request.url)
+        file = request.files.get("file")
+        
+        # si el archivo esta vacio 
+        if file is None:
+            return redirect(url_for('subir_extraccion'))
 
         # obtenemos la ruta del archivo
         file_path = subir_archivo(file, 'extracciones')
         
         # si la direccion es valida
-        if file_path != "No Valid.":
+        if file_path != "No valid.":
 
-            extraccion_json, messages = archivo_json(file_path)
+            extraccion_json, messages = archivo_extraccion_json(file_path)
         
             # cabecera utilizada para la peticion
             headers = {
@@ -118,8 +117,6 @@ def subir_extraccion():
                 return response.content
             
             return response.content
-            
-        # limitar_archivos_uploads(current_app.config['UPLOAD_FOLDER'])
 
     return render_template('subir_extraccion.html', form=form, auth=auth)
 
@@ -135,5 +132,35 @@ def exentar_bajas():
         return redirect(url_for('login_user'))
 
     form=SubirExtraccionForm()
+
+    if request.method == "POST":
+    
+        file = request.files.get("file")
+        
+        # si el archivo esta vacio 
+        if file is None:
+            return redirect(url_for('exentar_bajas'))
+
+        # obtenemos la ruta del archivo
+        file_path = subir_archivo(file, 'cuentas_exentas')
+        
+        # si la direccion es valida
+        if file_path != "No valid.":
+
+            extraccion_json, messages = archivo_exentas_json(file_path)
+        
+            # cabecera utilizada para la peticion
+            headers = {
+                'Authorization': f'Token {auth["token"]}',
+                'Content-Type': 'application/json'
+            }
+
+            url = API_URL + "exentas/"
+            response = requests.post(url, headers=headers, json=extraccion_json)
+            
+            if response.status_code == 200:
+                return response.content
+            
+            return response.content
 
     return render_template('exentar_bajas.html', form=form, auth=auth)

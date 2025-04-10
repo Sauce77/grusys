@@ -17,7 +17,7 @@ class SubirExtraccionForm(FlaskForm):
     """
         Recibe una archivo excel que contenga una extraccion.
     """
-    file = FileField(render_kw={"class":"form-control-file"})
+    file = FileField(render_kw={"class": "form-control-file"})
     enviar = wtf.SubmitField('Enviar',render_kw={"class":"btn btn-primary"})
 
     def validate_file(self, field):
