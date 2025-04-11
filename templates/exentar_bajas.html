@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exentar Bajas</title>
     {% include "_bootstrap.html" %}
+
+    <!-- Datatables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 </head>
 <body>
     {% include "_navbar.html" %}
@@ -12,11 +17,32 @@
 
     <div class="container mt-5">
 
-        <h2>Cuentas Exentas</h2>
+        <h2 class="m-3">Cuentas Exentas</h2>
+
+        <!-- Datatable -->
+        <table id="tablaExtraccion" class="compact stripe">
+          <thead>
+              <tr>
+                  <th>App</th>
+                  <th>Nombre</th>
+                  <th>Usuario</th>
+                  <th>Estatus</th>
+                  <th>Perfil</th>
+                  <th>Fecha Creacion</th>
+                  <th>Ultimo Acceso</th>
+                  <th>Responsable</th>
+                  <th>Requiere Acceso</th>
+                  <th>Comentarios</th>
+              </tr>
+          </thead>
+          <tbody>
+          </tbody>
+      </table>
 
         <!-- Form exentar bajas -->
-        <div class="card w-50 mx-auto">
+        <div class="card w-50 mx-auto mt-2">
           <div class="card-body">
+              <h5>Suba un archivo Excel indicando "app" y "usuario"</h5>
               <form method="post" enctype="multipart/form-data">
                 {{ form.csrf_token }}
                 <div class="form-group">
@@ -28,6 +54,11 @@
         </div>
       </div>
 
+      <!--  Cargar datos para tabla -->
+      <script>
+        var datosJSON = '{{ registros | tojson | safe }}';
+      </script>
+      <script type="text/javascript" src="{{ url_for('static', filename='scripts/datatable.js') }}"></script>
 
 </body>
 </html>

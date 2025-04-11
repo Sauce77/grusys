@@ -130,6 +130,18 @@ def exentar_bajas():
 
     if not auth:
         return redirect(url_for('login_user'))
+    
+    # cabecera utilizada para la peticion
+    headers = {
+        'Authorization': f'Token {auth["token"]}',
+        'Content-Type': 'application/json'
+    }
+
+    # peticion para mostrar cuentas exentas
+    url = API_URL + "exentas/"
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()
+    registros_json = response.json()
 
     form=SubirExtraccionForm()
 
@@ -148,14 +160,9 @@ def exentar_bajas():
         if file_path != "No valid.":
 
             extraccion_json, messages = archivo_exentas_json(file_path)
-        
-            # cabecera utilizada para la peticion
-            headers = {
-                'Authorization': f'Token {auth["token"]}',
-                'Content-Type': 'application/json'
-            }
 
-            url = API_URL + "exentas/"
+            # peticion para exentar cuentas
+            url = API_URL + "exentar/"
             response = requests.post(url, headers=headers, json=extraccion_json)
             
             if response.status_code == 200:
@@ -163,4 +170,4 @@ def exentar_bajas():
             
             return response.content
 
-    return render_template('exentar_bajas.html', form=form, auth=auth)
+    return render_template('exentar_bajas.html', form=form, auth=auth, registros=registros_json)

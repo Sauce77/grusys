@@ -32,7 +32,7 @@
         </ul>
       </div><!-- fin dropdown aplicativos -->
 
-      <table id="tablaExtraccion" class="display">
+      <table id="tablaExtraccion" class="compact stripe">
           <thead>
               <tr>
                   <th>App</th>
@@ -54,39 +54,11 @@
   </div><!-- fin container -->
 
     <!-- datatables -->
+    <!--  Cargar datos para tabla -->
     <script>
       var datosJSON = '{{ registros | tojson | safe }}';
-      var datosJavaScript = JSON.parse(datosJSON);
-
-      $(document).ready(function() {
-        $('#tablaExtraccion').DataTable({
-          data: datosJavaScript,
-          columns: [
-            { data: 'app' },
-            { data: 'nombre' },
-            { data: 'usuario' },
-            { data: 'estatus' },
-            { data: 'perfil' },
-            { data: 'fecha_creacion' },
-            { data: 'ultimo_acceso' },
-            { data: 'responsable' },
-            { data: 'requiere_acceso' },
-            { data: 'comentarios' },
-          ],
-          rowCallback: function(row, data) {
-            // Ejemplo: colorear la fila si el valor de la columna 'estado' es 'Pendiente'
-            if (data.en_extraccion === false ) { // Asumiendo que 'estado' está en la tercera columna (índice 2)
-              $(row).css('background-color', 'yellow');
-            }
-            else if(data.requiere_acceso === "NO"){
-              $(row).css('background-color', 'red');
-            }
-            else if(data.exenta_baja === true){
-              $(row).css('background-color', 'lightblue');
-            }
-          }
-        });
-      });
     </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='scripts/datatable.js') }}"></script>
+
 </body>
 </html>
