@@ -5,6 +5,7 @@ from flask import Flask, render_template, jsonify, request, redirect, session, u
 from forms import LoginForm
 
 from admin_user import routes_admin_user
+from certificacion import routes_certificacion
 
 API_URL = "https://grc-api.onrender.com/"
 
@@ -17,6 +18,7 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
 
 # registrar modulos de rutas
 app.register_blueprint(routes_admin_user, url_prefix='/admins')
+app.register_blueprint(routes_certificacion, url_prefix='/certificacion')
 
 @app.route("/" , methods=["GET","POST"])
 def index():
