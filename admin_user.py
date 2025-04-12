@@ -42,7 +42,7 @@ def mostrar_todos_registros():
     respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
     apps_json = respuesta.json()
 
-    return render_template("registros.html", auth=auth, registros=registros_json, apps=apps_json, titulo="Todos los registros")
+    return render_template("admins/registros.html", auth=auth, registros=registros_json, apps=apps_json, titulo="Todos los registros")
 
 
 @routes_admin_user.route("/registros/<app>")
@@ -75,7 +75,7 @@ def mostrar_app_registros(app):
 
     return render_template("registros.html", auth=auth, registros=registros_json, apps=apps_json, titulo=f"Registros {app}")
 
-@routes_admin_user.route("/extraccion", methods=["GET","POST"])
+@routes_admin_user.route("admins/extraccion", methods=["GET","POST"])
 def subir_extraccion():
     """
         Solicita la extraccion para cargar los usuarios.
@@ -118,7 +118,7 @@ def subir_extraccion():
             
             return response.content
 
-    return render_template('subir_extraccion.html', form=form, auth=auth)
+    return render_template('admins/subir_extraccion.html', form=form, auth=auth)
 
 @routes_admin_user.route("/exentar", methods=["GET","POST"])
 def exentar_bajas():
@@ -170,4 +170,4 @@ def exentar_bajas():
             
             return response.content
 
-    return render_template('exentar_bajas.html', form=form, auth=auth, registros=registros_json)
+    return render_template('admins/exentar_bajas.html', form=form, auth=auth, registros=registros_json)

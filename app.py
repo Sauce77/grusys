@@ -56,7 +56,7 @@ def login_user():
         except requests.exceptions.RequestException as e:
             return jsonify({'error': str(e)}), response.status_code if hasattr(response, 'status_code') else 500
 
-    return render_template('login.html', form=form)
+    return render_template('accesos/login.html', form=form)
 
 @app.route('/logout')
 def logout():
