@@ -11,8 +11,28 @@ $(document).ready(function() {
           { data: 'usuario', name: 'usuario'},
           { data: 'estatus', name: 'estatus' },
           { data: 'perfil', name: 'perfil' },
-          { data: 'fecha_creacion', name: 'fecha_creacion' },
-          { data: 'ultimo_acceso', name: 'ultimo_acceso' },
+          { data: 'fecha_creacion',
+            render: function (data, type, row) {
+              // Asigna un valor único al checkbox, por ejemplo, el ID del registro
+              if(data === null){
+                return 'No disponible';  
+              }
+              else{
+                return data
+              }
+            }
+          },
+          { data: 'ultimo_acceso',
+            render: function (data, type, row) {
+              // Asigna un valor único al checkbox, por ejemplo, el ID del registro
+              if(data === null){
+                return 'No disponible';  
+              }
+              else{
+                return data
+              }
+            }
+          },
           { data: 'responsable', name: 'responsable' },
           { data: 'requiere_acceso', name: 'requiere_acceso' },
           { data: 'comentarios', name: 'comentarios' },
