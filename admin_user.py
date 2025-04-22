@@ -62,7 +62,7 @@ def mostrar_app_registros(app):
     }
 
     # peticion para registros
-    url = API_URL + "registros/" + app
+    url = API_URL + "registros/app/" + app
     respuesta = requests.get(url, headers=headers)
     respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
     registros_json = respuesta.json()

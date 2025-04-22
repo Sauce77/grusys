@@ -15,7 +15,7 @@
     {% include "componentes/_navbar.html" %}
     {% include "componentes/_offcanvas.html" %}
 
-    <div class="container w-75">
+  <div class="container w-75">
       <h2 class="my-3">{{ titulo }}</h2>
 
       <!-- Dropdown aplicativos -->
@@ -32,7 +32,7 @@
         </ul>
       </div> <!-- fin dropdown aplicativos -->
 
-      <table id="tablaExtraccion" class="compact stripe">
+      <table id="tablaRegistros" class="stripe">
           <thead>
               <tr>
                   <th>App</th>
@@ -51,6 +51,10 @@
           </tbody>
       </table>
 
+      <button  class="btn btn-primary" id="obtenerSeleccionados">Enviar</button>
+
+      <div id="filasSeleccionadas"></div>
+      <div id="contadorSeleccion"></div>
   </div><!-- fin container -->
 
     <!-- datatables -->
@@ -58,7 +62,7 @@
     <script>
       var datosJSON = '{{ registros | tojson | safe }}';
     </script>
-    <script type="text/javascript" src="{{ url_for('static', filename='scripts/datatable.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='scripts/table_certificacion.js') }}"></script>
 
 </body>
 </html>
