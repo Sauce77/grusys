@@ -6,48 +6,58 @@ $(document).ready(function(){
         var json_respuesta = [];
 
         $('#tablaRegistros').DataTable().rows().every(function(rowIdx, tableLoop, rowLoop){
-            // obtenemos datos de la fila actual
-            var rowData = this.data();
+
+          // obtenemos datos de la fila actual
+          var rowData = this.data();
+
+          var respuesta = {
+              "app": rowData["app"],
+              "usuario": rowData["usuario"],
+              "requiere_acceso": "SI",
+              "comentarios": ""
+          };
 
             // obtenemos el componente <tr>
-            let $fila = $(this.node());
-
-            // obtenemos el valor del acceso
-            var acceso = "SI";
+            let fila = $(this.node());
             
-            let checkbox = $fila.find('.form-check-input');
+            let checkbox = fila.find(".form-check-input")
 
-            if(checkbox!==null){
+            if(checkbox.length > 0){
+              
+              if(checkbox.is(":checked")){
+                respuesta.requiere_acceso = "SI";
+              }
+              else{
+                respuesta.requiere_acceso = "NO";
+              }
 
-                if (checkbox.is(':checked') === false){
-                    acceso = "NO";
-                }// fin if checked
-    
-                let textarea = $fila.find('textarea');
-                
-                var comentarios = textarea.val();
-    
-                var respuesta = {
-                    "app": rowData["app"],
-                    "usuario": rowData["usuario"],
-                    "requiere_acceso": acceso,
-                    "comentarios": comentarios
-                };
-                
+            }// si contiene checkbox
+
+            // caja de comentarios
+
+            let textarea = fila.find("textarea");
+
+            if(textarea.length>0){
+              respuesta.comentarios = textarea.val()
             }
 
             json_respuesta.push(respuesta);
         });
         
+        console.log(json_respuesta);
+        
+        // credenciales
+        actToken = authJSON.token;
 
         //enviar peticion
         fetch('https://grc-api.onrender.com/certificacion/enviar/', {
             method: 'POST',
             headers: {
+              'Accept': '*/*',
               'Content-Type': 'application/json',
-              'Authorization': 'Token '+authJSON.token
+              'Authorization': `Token ${actToken}`
             },
-            body: JSON.stringify(json_respuesta),
+            body: JSON.stringify(json_respuesta)
           })
             .then(response => {
               if (!response.ok) {
