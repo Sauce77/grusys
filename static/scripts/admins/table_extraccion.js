@@ -46,7 +46,7 @@ $(document).ready(function() {
               $(row).css('background-color', 'yellow');
             }
             else if(data.requiere_acceso === "NO"){
-              $(row).css('background-color', 'red');
+              $(row).css('background-color', '#E8785F');
             }
             else if(data.exenta_baja === true){
               $(row).css('background-color', 'lightblue');

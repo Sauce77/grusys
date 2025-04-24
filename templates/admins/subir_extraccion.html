@@ -11,6 +11,13 @@
     {% include "componentes/_navbar.html" %}
     {% include "componentes/_offcanvas.html" %}
 
+    <div class="container my-2 alig">
+        {% for message in messages %}
+          <div class="alert alert-primary" role="alert">
+            {{ message }}
+          </div>
+        {% endfor%}
+    </div>
     <div class="container mt-5">
 
       <div class="card w-50 mx-auto">

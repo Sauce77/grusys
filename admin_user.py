@@ -82,7 +82,8 @@ def subir_extraccion():
         Valida un excel y envia la peticion en JSON al API.
     """
     auth = session.get("user")
-
+    messages = []
+    
     if not auth:
         return redirect(url_for('login_user'))
 
@@ -112,13 +113,11 @@ def subir_extraccion():
 
             url = API_URL + "insertar/"
             response = requests.post(url, headers=headers, json=extraccion_json)
-            
-            if response.status_code == 200:
-                return response.content
-            
-            return response.content
 
-    return render_template('admins/subir_extraccion.html', form=form, auth=auth)
+            for message in response.json().values():
+                messages.append(message)
+
+    return render_template('admins/subir_extraccion.html', form=form, auth=auth, messages=messages)
 
 @routes_admin_user.route("/exentar", methods=["GET","POST"])
 def exentar_bajas():
