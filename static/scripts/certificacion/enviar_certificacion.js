@@ -67,6 +67,7 @@ $(document).ready(function(){
             })
             .then(data => {
               console.log('Certificacion Enviada', data);
+              window.location.reload();
             })
             .catch(error => {
               console.error('Hubo un error:', error);
