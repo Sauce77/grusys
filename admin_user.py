@@ -178,6 +178,24 @@ def aplicar_politica():
         exenta_bajas a true.
     """
     auth = session.get("user")
+
+    messages = []
+
+    if request.method == "POST":
+        
+        # obtenemos el numero de dias
+        dias = request.form["diasPolitica"]
+        # convertimos el texto a entero
+        num_dias = None
+        try:
+            num_dias = int(dias)
+        except ValueError as e:
+            messages.append("Numero ingresado invalido.")
+
+        # obtenemos las celdas marcadas
+        apps_seleccionadas = request.form.getlist("apps[]")
+
+        return apps_seleccionadas
     
     # cabecera utilizada para la peticion
     headers = {

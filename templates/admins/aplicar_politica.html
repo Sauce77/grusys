@@ -20,19 +20,19 @@
                         <form method="post">
                             <div class="mb-3 w-50 mx-auto">
                                 <label for="diasPolitica" class="form-label">Dias Politica</label>
-                                <input type="text" class="form-control" id="diasPolitica" value="60">
+                                <input type="text" class="form-control" id="diasPolitica" name="diasPolitica" value="60">
                             </div>
 
                             <p>Aplicar politica en los siguientes aplicativos: </p>
                             {% for app in apps %}
                                 <div class="form-check my-1">
-                                    <input class="form-check-input" type="checkbox" value="{{ app.nombre }}" id="checkChecked" checked>
-                                    <label class="form-check-label" for="checkChecked">
+                                    <input class="form-check-input" type="checkbox" value="{{ app.nombre }}" name="apps[]" checked>
+                                    <label class="form-check-label">
                                         {{ app.nombre }}
                                     </label>
                                 </div>
                             {% endfor %}
-                            <button class="btn btn-primary mt-3" type="submit">Aplicar</button>
+                            <button class="btn btn-primary mt-3 mx-auto" type="submit">Aplicar</button>
                         </form>
 
                     </div>
