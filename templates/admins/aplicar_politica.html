@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Politica</title>
+    {% include "componentes/_bootstrap.html" %}
+</head>
+<body>
+    {% include "componentes/_navbar.html" %}
+    {% include "componentes/_offcanvas.html" %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+
+                <div class="card mt-3 w-50 mx-auto">
+                    <div class="card-body">
+                        <h5 class="card-title">Aplicar Politica de Bajas para Aplicativos</h5>
+                        <form method="post">
+                            <div class="mb-3 w-50 mx-auto">
+                                <label for="diasPolitica" class="form-label">Dias Politica</label>
+                                <input type="text" class="form-control" id="diasPolitica" value="60">
+                            </div>
+
+                            <p>Aplicar politica en los siguientes aplicativos: </p>
+                            {% for app in apps %}
+                                <div class="form-check my-1">
+                                    <input class="form-check-input" type="checkbox" value="{{ app.nombre }}" id="checkChecked" checked>
+                                    <label class="form-check-label" for="checkChecked">
+                                        {{ app.nombre }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                            <button class="btn btn-primary mt-3" type="submit">Aplicar</button>
+                        </form>
+
+                    </div>
+                </div><!-- fin card form -->
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

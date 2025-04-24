@@ -170,3 +170,25 @@ def exentar_bajas():
             return response.content
 
     return render_template('admins/exentar_bajas.html', form=form, auth=auth, registros=registros_json)
+
+@routes_admin_user.route("/politica", methods=["GET","POST"])
+def aplicar_politica():
+    """
+        Recibe un archivo de word con apps y cuentas. Se modifica el valor
+        exenta_bajas a true.
+    """
+    auth = session.get("user")
+    
+    # cabecera utilizada para la peticion
+    headers = {
+        'Authorization': f'Token {auth["token"]}',
+        'Content-Type': 'application/json'
+    }
+    
+    # peticion para aplicativos
+    url = API_URL + "apps"
+    respuesta = requests.get(url, headers=headers)
+    respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
+    apps_json = respuesta.json()
+
+    return render_template("admins/aplicar_politica.html",auth=auth, apps=apps_json)

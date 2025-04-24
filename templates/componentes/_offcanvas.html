@@ -27,6 +27,24 @@
               </div>
             </div><!-- fin extraccion -->
 
+            <div class="accordion-item"><!-- politica -->
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flushPolitica" aria-expanded="false" aria-controls="flushCertificar">
+                  Politicas
+                </button>
+              </h2>
+              <div id="flushPolitica" class="accordion-collapse collapse" data-bs-parent="#accordionFlush">
+
+                <div class="accordion-body">
+                  <div class="list-group">
+                    <a class="list-group-item list-group-item-action" href="{{ url_for('admins.aplicar_politica') }}">Aplicar Politca Bajas</a>
+                  </div>
+                  
+                </div> 
+
+              </div>
+            </div><!-- fin politica -->
+
 
             <div class="accordion-item"><!-- certificacion -->
               <h2 class="accordion-header">
@@ -34,7 +52,7 @@
                   Certificación
                 </button>
               </h2>
-              <div id="flushCertificar" class="accordion-collapse collapse" data-bs-parent="#accordionCertificar">
+              <div id="flushCertificar" class="accordion-collapse collapse" data-bs-parent="#accordionFlush">
 
                 <div class="accordion-body">
                   <div class="list-group">
