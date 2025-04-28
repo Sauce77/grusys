@@ -181,6 +181,12 @@ def aplicar_politica():
 
     messages = []
 
+    # cabecera utilizada para la peticion
+    headers = {
+        'Authorization': f'Token {auth["token"]}',
+        'Content-Type': 'application/json'
+    }
+
     if request.method == "POST":
         
         # obtenemos el numero de dias
@@ -195,13 +201,21 @@ def aplicar_politica():
         # obtenemos las celdas marcadas
         apps_seleccionadas = request.form.getlist("apps[]")
 
-        return apps_seleccionadas
-    
-    # cabecera utilizada para la peticion
-    headers = {
-        'Authorization': f'Token {auth["token"]}',
-        'Content-Type': 'application/json'
-    }
+        json_politica = {
+            "dias": num_dias,
+            "apps": []
+        }
+
+        # agregamos cada app seleccionado al json_politica
+
+        for app in apps_seleccionadas:
+            json_politica["apps"].append({"nombre": app})
+
+        url = API_URL + "politica/"
+        respuesta = requests.post(url, headers=headers, json=json_politica)
+        respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
+
+        return respuesta.content
     
     # peticion para aplicativos
     url = API_URL + "apps"
