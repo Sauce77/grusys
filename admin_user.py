@@ -9,7 +9,9 @@ from scripts.uploads import subir_archivo
 
 routes_admin_user = Blueprint("admins", __name__)
 
-API_URL = "https://grc-api.onrender.com/extraccion/"
+API_URL_EXTRACCION = "https://grc-api.onrender.com/extraccion/"
+API_URL_CERTIFICACION = "https://grc-api.onrender.com/certificacion/"
+
 
 @routes_admin_user.route("/", methods=["GET","POST"])
 def root():
@@ -31,13 +33,13 @@ def mostrar_todos_registros():
     }
 
     # peticion para registros
-    url = API_URL + "registros/"
+    url = API_URL_EXTRACCION + "registros/"
     respuesta = requests.get(url, headers=headers)
     respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
     registros_json = respuesta.json()
 
     # peticion para aplicativos
-    url = API_URL + "apps"
+    url = API_URL_EXTRACCION + "apps"
     respuesta = requests.get(url, headers=headers)
     respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
     apps_json = respuesta.json()
@@ -62,13 +64,13 @@ def mostrar_app_registros(app):
     }
 
     # peticion para registros
-    url = API_URL + "registros/app/" + app
+    url = API_URL_EXTRACCION + "registros/app/" + app
     respuesta = requests.get(url, headers=headers)
     respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
     registros_json = respuesta.json()
 
     # peticion para aplicativos
-    url = API_URL + "apps"
+    url = API_URL_EXTRACCION + "apps"
     respuesta = requests.get(url, headers=headers)
     respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
     apps_json = respuesta.json()
@@ -111,7 +113,7 @@ def subir_extraccion():
                 'Content-Type': 'application/json'
             }
 
-            url = API_URL + "insertar/"
+            url = API_URL_EXTRACCION + "insertar/"
             response = requests.post(url, headers=headers, json=extraccion_json)
 
             for message in response.json().values():
@@ -137,7 +139,7 @@ def exentar_bajas():
     }
 
     # peticion para mostrar cuentas exentas
-    url = API_URL + "exentas/"
+    url = API_URL_EXTRACCION + "exentas/"
     response = requests.get(url, headers=headers)
     response.raise_for_status()
     registros_json = response.json()
@@ -161,7 +163,7 @@ def exentar_bajas():
             extraccion_json, messages = archivo_exentas_json(file_path)
 
             # peticion para exentar cuentas
-            url = API_URL + "exentar/"
+            url = API_URL_CERTIFICACION + "exentar/"
             response = requests.post(url, headers=headers, json=extraccion_json)
             
             if response.status_code == 200:
@@ -211,14 +213,14 @@ def aplicar_politica():
         for app in apps_seleccionadas:
             json_politica["apps"].append({"nombre": app})
 
-        url = API_URL + "politica/"
+        url = API_URL_CERTIFICACION + "politica/"
         respuesta = requests.post(url, headers=headers, json=json_politica)
         respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
 
         return respuesta.content
     
     # peticion para aplicativos
-    url = API_URL + "apps"
+    url = API_URL_EXTRACCION + "apps"
     respuesta = requests.get(url, headers=headers)
     respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
     apps_json = respuesta.json()
