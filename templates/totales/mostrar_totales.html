@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Totales</title>
+    {% include "componentes/_bootstrap.html" %}
+</head>
+<body>
+    {% include "componentes/_navbar.html" %}
+    {% include "componentes/_offcanvas.html" %}
+
+    <div class="container">
+        <h1>Totales</h1>
+
+        {{ tabla|safe }}
+    </div>
+</body>
+</html>
