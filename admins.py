@@ -7,17 +7,17 @@ from forms import SubirExtraccionForm
 from scripts.extracciones import archivo_extraccion_json, archivo_exentas_json
 from scripts.uploads import subir_archivo
 
-routes_admin_user = Blueprint("admins", __name__)
+routes_admins = Blueprint("admins", __name__)
 
 API_URL_EXTRACCION = "https://grc-api.onrender.com/extraccion/"
 API_URL_CERTIFICACION = "https://grc-api.onrender.com/certificacion/"
 
 
-@routes_admin_user.route("/", methods=["GET","POST"])
+@routes_admins.route("/", methods=["GET","POST"])
 def root():
     return "Hola"
 
-@routes_admin_user.route("/registros", methods=["GET","POST"])
+@routes_admins.route("/registros", methods=["GET","POST"])
 def mostrar_todos_registros():
     """
         Muestra todos los registros de la base de datos
@@ -47,7 +47,7 @@ def mostrar_todos_registros():
     return render_template("admins/registros.html", auth=auth, registros=registros_json, apps=apps_json, titulo="Todos los registros")
 
 
-@routes_admin_user.route("/registros/<app>")
+@routes_admins.route("/registros/<app>")
 def mostrar_app_registros(app):
     """
         Muestra usuarios separados por aplicativo.
@@ -77,7 +77,7 @@ def mostrar_app_registros(app):
 
     return render_template("admins/registros.html", auth=auth, registros=registros_json, apps=apps_json, titulo=f"Registros {app}")
 
-@routes_admin_user.route("admins/extraccion.html", methods=["GET","POST"])
+@routes_admins.route("admins/extraccion.html", methods=["GET","POST"])
 def subir_extraccion():
     """
         Solicita la extraccion para cargar los usuarios.
@@ -121,7 +121,7 @@ def subir_extraccion():
 
     return render_template('admins/subir_extraccion.html', form=form, auth=auth, messages=messages)
 
-@routes_admin_user.route("/exentar", methods=["GET","POST"])
+@routes_admins.route("/exentar", methods=["GET","POST"])
 def exentar_bajas():
     """
         Recibe un archivo de word con apps y cuentas. Se modifica el valor
@@ -173,7 +173,7 @@ def exentar_bajas():
 
     return render_template('admins/exentar_bajas.html', form=form, auth=auth, registros=registros_json)
 
-@routes_admin_user.route("/politica", methods=["GET","POST"])
+@routes_admins.route("/politica", methods=["GET","POST"])
 def aplicar_politica():
     """
         Recibe un archivo de word con apps y cuentas. Se modifica el valor

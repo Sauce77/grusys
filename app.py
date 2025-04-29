@@ -4,8 +4,9 @@ import json
 from flask import Flask, render_template, jsonify, request, redirect, session, url_for
 from forms import LoginForm
 
-from admin_user import routes_admin_user
+from admins import routes_admins
 from certificacion import routes_certificacion
+from totales import routes_totales
 
 API_URL = "https://grc-api.onrender.com/"
 
@@ -17,8 +18,9 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
 # registrar modulos de rutas
-app.register_blueprint(routes_admin_user, url_prefix='/admins')
+app.register_blueprint(routes_admins, url_prefix='/admins')
 app.register_blueprint(routes_certificacion, url_prefix='/certificacion')
+app.register_blueprint(routes_totales, url_prefix="/totales")
 
 @app.route("/" , methods=["GET","POST"])
 def index():
