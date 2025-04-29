@@ -11,9 +11,34 @@
     {% include "componentes/_offcanvas.html" %}
 
     <div class="container">
-        <h1>Totales</h1>
+        <h1>Totales {{ app }}</h1>
 
-        {{ tabla|safe }}
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Responsable</th>
+                <th scope="col">Total Usuarios</th>
+                <th scope="col">Enviado</th>
+                <th scope="col">Respuestas</th>
+                <th scope="col">Baja Politica</th>
+                <th scope="col">Baja Responsable</th>
+                <th scope="col">Conservar Acceso</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for total in totales %}
+                <tr>
+                    <th scope="row">{{ total.responsable }}</th>
+                    <td>{{ total.total_usuarios }}</td>
+                    <td>{{ total.enviado_responsable }}</td>
+                    <td>{{ total.respuesta_responsable }}</td>
+                    <td>{{ total.baja_automatica }}</td>
+                    <td>{{ total.baja_responsable }}</td>
+                    <td>{{ total.conservar_acceso }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+          </table>
     </div>
 </body>
 </html>
