@@ -13,7 +13,7 @@ $(document).ready(function(){
           var respuesta = {
               "app": rowData["app"],
               "usuario": rowData["usuario"],
-              "requiere_acceso": "SI",
+              "requiere_acceso": null,
               "comentarios": ""
           };
 
@@ -32,13 +32,19 @@ $(document).ready(function(){
               }
 
             }// si contiene checkbox
+            else{
+              respuesta.requiere_acceso = rowData["requiere_acceso"];
+            }
 
             // caja de comentarios
 
             let textarea = fila.find("textarea");
 
             if(textarea.length>0){
-              respuesta.comentarios = textarea.val()
+              respuesta.comentarios = textarea.val();
+            }
+            else{
+              respuesta.comentarios = rowData["comentarios"];
             }
 
             json_respuesta.push(respuesta);
