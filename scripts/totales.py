@@ -11,12 +11,11 @@ def obtener_totales(datos):
 
     # obtenemos el numero de usuarios a certificar
     # necesita agregar campo enviado_responsable a los registros
-    total_respuestas_app = len(df_res["requiere_acceso"].isnull())
+    total_respuestas_app = len(df["requiere_acceso"].isnull())
 
     # obtenemos bajas automaticas de aplicacion
     expresion_baja_politica = r'BAJA POLITICA \d+ DIAS'
-    filtro_bajas_politica = df["comentarios"].str.contains(expresion_baja_politica, regex=True)
-    filtro_bajas_politica = filtro_bajas_politica.fillna(False).astype(bool)
+    filtro_bajas_politica = df["comentarios"].str.contains(expresion_baja_politica, regex=True, na=False)
     total_bajas_automaticas_app = len(df[filtro_bajas_politica])
 
     # obtenemos bajas responsable de aplicacion
@@ -50,8 +49,7 @@ def obtener_totales(datos):
         # obtenemos el total de bajas automaticas
         # revisamos si los comentarios coincide con BAJA POLITICA n DIAS
         expresion_baja_politica = r'BAJA POLITICA \d+ DIAS'
-        filtro_bajas_politica = df_res["comentarios"].str.contains(expresion_baja_politica, regex=True)
-        filtro_bajas_politica = filtro_bajas_politica.fillna(False).astype(bool)
+        filtro_bajas_politica = df_res["comentarios"].str.contains(expresion_baja_politica, regex=True, na=False)
         total_bajas_automaticas = len(df_res[filtro_bajas_politica])
 
         # obtenemos el total de bajas responsable

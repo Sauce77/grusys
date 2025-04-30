@@ -34,5 +34,5 @@ def root(app):
     respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
     apps_json = respuesta.json()
 
-    json_totales = obtener_totales(registros_json)
-    return render_template("totales/mostrar_totales.html",auth=auth,totales=json_totales,app=app)
+    json_total_app, json_totales_res = obtener_totales(registros_json)
+    return render_template("totales/mostrar_totales.html",auth=auth,total_app=json_total_app,totales=json_totales_res,app=app)
