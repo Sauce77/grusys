@@ -5,45 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Totales</title>
     {% include "componentes/_bootstrap.html" %}
+    <!-- Datatables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 </head>
 <body>
     {% include "componentes/_navbar.html" %}
     {% include "componentes/_offcanvas.html" %}
 
-    <div class="container">
-        <h1>Totales {{ app }}</h1>
+    <div class="container mt-3">
 
-        <p>Total Usuarios: {{ total_app.total_usuarios }}</p>
-        <p>Total Respuestas: {{ total_app.total_respuestas }}</p>
-        <p>Total Bajas Automáticas: {{ total_app.bajas_automaticas }}</p>
-        <p>Total Bajas Responsable: {{ total_app.bajas_responsable }}</p>
+      <h1 class="mx-auto">Totales {{ app }}</h1>
 
-        <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Responsable</th>
-                <th scope="col">Total Usuarios</th>
-                <th scope="col">Enviado</th>
-                <th scope="col">Respuestas</th>
-                <th scope="col">Baja Politica</th>
-                <th scope="col">Baja Responsable</th>
-                <th scope="col">Conservar Acceso</th>
-              </tr>
-            </thead>
-            <tbody>
-                {% for total in totales %}
+      <!-- Dropdown aplicativos -->
+      <div class="dropdown">
+        <a class="btn btn-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Aplicativo
+        </a>
+      
+        <ul class="dropdown-menu">
+          {% for app in apps %}
+            <li><a class="dropdown-item" href="{{ url_for('totales.root',app=app.nombre) }}">{{ app.nombre }}</a></li>
+          {% endfor %}
+        </ul>
+      </div> <!-- fin dropdown aplicativos -->
+
+
+      <div class="row mt-3">
+        <div class="col-lg-2">
+            <table class="table table-success">
+              <tbody>
                 <tr>
-                    <th scope="row">{{ total.responsable }}</th>
-                    <td>{{ total.total_usuarios }}</td>
-                    <td>{{ total.enviado_responsable }}</td>
-                    <td>{{ total.respuesta_responsable }}</td>
-                    <td>{{ total.baja_automatica }}</td>
-                    <td>{{ total.baja_responsable }}</td>
-                    <td>{{ total.conservar_acceso }}</td>
+                  <th scope="row">Total Usuarios</th>
+                  <td>{{ total_app.total_usuarios }}</td>
                 </tr>
-                {% endfor %}
-            </tbody>
-          </table>
+                <tr>
+                  <th scope="row">Total Respuestas</th>
+                  <td>{{ total_app.total_respuestas }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Total Bajas Responsable</th>
+                  <td>{{ total_app.bajas_responsable }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Total Bajas Automáticas</th>
+                  <td>{{ total_app.bajas_automaticas }}</td>
+                </tr>
+              </tbody>
+            </table>
+        </div><!-- fin div col tabla totales app -->
+        
+        <div class="col lg-8">
+            <table class="table table-striped" id="tablaTotales">
+              <thead>
+                <tr>
+                  <th scope="col">Responsable</th>
+                  <th scope="col">Total Usuarios</th>
+                  <th scope="col">Enviado</th>
+                  <th scope="col">Respuestas</th>
+                  <th scope="col">Baja Politica</th>
+                  <th scope="col">Baja Responsable</th>
+                  <th scope="col">Conservar Acceso</th>
+                </tr>
+              </thead>
+              <tbody>
+                  {% for total in totales %}
+                    <tr>
+                      <td>{{ total.responsable }}</td>
+                      <td>{{ total.total_usuarios }}</td>
+                      <td>{{ total.enviado_responsable }}</td>
+                      <td>{{ total.respuesta_responsable }}</td>
+                      <td>{{ total.baja_automatica }}</td>
+                      <td>{{ total.baja_responsable }}</td>
+                      <td>{{ total.conservar_acceso }}</td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+        </div><!-- fin div col  tabla totales responsable -->
+        
+      </div><!-- fin row tablas -->
+            
     </div>
+
 </body>
 </html>

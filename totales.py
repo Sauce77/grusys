@@ -35,4 +35,4 @@ def root(app):
     apps_json = respuesta.json()
 
     json_total_app, json_totales_res = obtener_totales(registros_json)
-    return render_template("totales/mostrar_totales.html",auth=auth,total_app=json_total_app,totales=json_totales_res,app=app)
+    return render_template("totales/mostrar_totales.html",auth=auth,apps=apps_json,total_app=json_total_app,totales=json_totales_res,app=app)
