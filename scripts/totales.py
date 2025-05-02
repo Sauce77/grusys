@@ -1,4 +1,6 @@
 import pandas as pd
+import xlsxwriter
+import io
 
 def obtener_totales(datos):
     """
@@ -72,3 +74,23 @@ def obtener_totales(datos):
         total_responsables.append(respuesta)
 
     return total_app, total_responsables
+
+
+def obtener_totales_excel(datos):
+    """
+        Obtiene todos los registros de aplicativos y divide para cada uno
+        los totales en un archivo excel.
+    """
+    df = pd.json_normalize(datos)
+
+    # para escribir en a memoria
+    output = io.BytesIO()
+    # creamos el workbook
+    libro = xlsxwriter.Workbook(output)
+
+    hoja = libro.add_worksheet("Euphories")
+    hoja.write("A1", "Pourrions-nous revenir sur cette histoire?")
+    libro.close()
+    # volvemos al inicio de la memoria
+    output.seek(0)
+    return output

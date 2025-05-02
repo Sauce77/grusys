@@ -1,8 +1,10 @@
 import os
 import requests
-from flask import Blueprint,render_template,request, current_app, redirect, jsonify, session, url_for
+from flask import Blueprint,render_template,request, session, url_for, send_file, redirect
+import io
+import xlsxwriter
 
-from scripts.totales import obtener_totales
+from scripts.totales import obtener_totales,obtener_totales_excel
 
 routes_totales = Blueprint("totales", __name__)
 
@@ -37,6 +39,7 @@ def mostrar_todos_totales():
     apps_json = respuesta.json()
 
     json_total_app, json_totales_res = obtener_totales(registros_json)
+        
     return render_template("totales/mostrar_totales.html",auth=auth,apps=apps_json,total_app=json_total_app,totales=json_totales_res,app="todos los Aplicativos")
 
 @routes_totales.route("/<app>", methods=["GET","POST"])
@@ -68,3 +71,26 @@ def mostrar_app_totales(app):
 
     json_total_app, json_totales_res = obtener_totales(registros_json)
     return render_template("totales/mostrar_totales.html",auth=auth,apps=apps_json,total_app=json_total_app,totales=json_totales_res,app=app)
+
+
+@routes_totales.route("/descargar")
+def descargar_excel():
+    """
+        Convierte la informacion JSON de totales 
+    """
+
+    # guardamos el archivo a generar en memoria
+    output = io.BytesIO()
+
+    try:
+        output = obtener_totales_excel({"prenom": "euphories"})
+        
+        return send_file(
+            output,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            download_name='mi_archivo_generado.xlsx'
+        )
+
+    except Exception as e:
+        return f"Hubo un error al descargar: {e}"
