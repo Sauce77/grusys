@@ -74,7 +74,7 @@ def obtener_totales(df):
 
     return total_app, total_responsables
 
-def formato_excel(hoja, formatos, total_app, totales_responsables):
+def formato_totales(hoja, formatos, total_app, totales_responsables):
     """
         Ingresa los totales de la aplicacion en un formato
         de la hoja elegida.
@@ -91,10 +91,9 @@ def formato_excel(hoja, formatos, total_app, totales_responsables):
         titulo = clave.replace("_"," ").upper()
 
         # ingresamos titulo
-        hoja.write(index, 0, titulo, formatos["titulo"])
+        hoja.write(index+1, 0, titulo, formatos["titulo"])
         # ingresamos cifra
-        hoja.write(index, 2, valor, formatos["cifra"])
-        index = index + 1
+        hoja.write(index+1, 2, valor, formatos["cifra"])
 
     # ajustamos ancho de columna titulos
     hoja.set_column(0,0,ancho+7)
@@ -117,7 +116,7 @@ def formato_excel(hoja, formatos, total_app, totales_responsables):
             if clave == "responsable":
                 continue
 
-            hoja.write(8+(index*filas_responsable)+index_fila-1, 1, valor, formatos["texto"])
+            hoja.write(8+(index*filas_responsable)+index_fila-1, 2, valor, formatos["cifra"])
 
 def obtener_totales_excel(registros_json):
     """
@@ -143,12 +142,25 @@ def obtener_totales_excel(registros_json):
 
     totales_todo, totales_todo_responsable = obtener_totales(df_registros)
 
-    formato_excel(hoja, formatos, totales_todo, totales_todo_responsable)
+    formato_totales(hoja, formatos, totales_todo, totales_todo_responsable)
 
-    
-    
     # obtenemos el nombre de las apps
     apps = df_registros["app"].unique()
+
+    # una hoja para cada app de totales
+    for app in apps:
+        # filtramos registro por aplicacion
+        df_app = df_registros[df_registros["app"] == app]
+
+        # obtenemos totales del app
+        totales_app, totales_app_responsable = obtener_totales(df_app)
+
+        # creamos hoja de la app
+        hoja = libro.add_worksheet(app)
+
+        # insertamos formato totales
+        formato_totales(hoja,formatos,totales_app,totales_app_responsable)
+
 
     libro.close()
     # volvemos al inicio de la memoria
