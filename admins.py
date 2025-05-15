@@ -166,10 +166,7 @@ def exentar_bajas():
             url = API_URL_CERTIFICACION + "exentar/"
             response = requests.post(url, headers=headers, json=extraccion_json)
             
-            if response.status_code == 200:
-                return response.content
-            
-            return response.content
+            return redirect(url_for('admins.exentar_bajas'))
 
     return render_template('admins/exentar_bajas.html', form=form, auth=auth, registros=registros_json)
 
@@ -216,8 +213,6 @@ def aplicar_politica():
         url = API_URL_CERTIFICACION + "politica/"
         respuesta = requests.post(url, headers=headers, json=json_politica)
         respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
-
-        return respuesta.content
     
     # peticion para aplicativos
     url = API_URL_EXTRACCION + "apps"
