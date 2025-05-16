@@ -17,6 +17,8 @@ API_URL_CERTIFICACION = "https://grc-api.onrender.com/certificacion/"
 def root():
     return "Hola"
 
+# --------------- Registros -------------------------
+
 @routes_admins.route("/registros", methods=["GET","POST"])
 def mostrar_todos_registros():
     """
@@ -77,7 +79,8 @@ def mostrar_app_registros(app):
 
     return render_template("admins/registros.html", auth=auth, registros=registros_json, apps=apps_json, titulo=f"Registros {app}")
 
-@routes_admins.route("admins/extraccion.html", methods=["GET","POST"])
+# ------------------- Extraccion --------------------
+@routes_admins.route("admins/extraccion", methods=["GET","POST"])
 def subir_extraccion():
     """
         Solicita la extraccion para cargar los usuarios.
@@ -121,10 +124,74 @@ def subir_extraccion():
 
     return render_template('admins/subir_extraccion.html', form=form, auth=auth, messages=messages)
 
+
+@routes_admins.route("/bajas", methods=["GET", "POST"])
+def mostrar_bajas():
+    """
+        Muestra los registros cuyo valor requiere_acceso es NO.
+    """
+    auth = session.get("user")
+
+    if not auth:
+        return redirect(url_for('login_user'))
+    
+    # obtenemos el username de la sesion actual
+    data_usuario = auth.get("user")
+    username = data_usuario.get("username")
+
+    # cabecera utilizada para la peticion
+    headers = {
+        'Authorization': f'Token {auth["token"]}'
+    }
+
+     # peticion para aplicativos
+    url = API_URL_EXTRACCION + "apps/"
+    respuesta = requests.get(url, headers=headers)
+    respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
+    apps_json = respuesta.json()
+
+    # peticion para bajas
+    url = API_URL_EXTRACCION + "bajas"
+    respuesta = requests.get(url, headers=headers)
+    respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
+    registros_json = respuesta.json()
+
+    return render_template("admins/bajas.html", auth=auth, registros=registros_json, apps=apps_json, titulo="Bajas Aplicativos")
+
+@routes_admins.route("/bajas/<app>", methods=["GET", "POST"])
+def mostrar_bajas_app(app):
+    """
+        Muestra los registros cuyo valor requiere_acceso es NO.
+    """
+    auth = session.get("user")
+
+    if not auth:
+        return redirect(url_for('login_user'))
+
+    # cabecera utilizada para la peticion
+    headers = {
+        'Authorization': f'Token {auth["token"]}'
+    }
+
+     # peticion para aplicativos
+    url = API_URL_EXTRACCION + "apps/"
+    respuesta = requests.get(url, headers=headers)
+    respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
+    apps_json = respuesta.json()
+
+    # peticion para bajas
+    url = API_URL_EXTRACCION + "bajas/" + app
+    respuesta = requests.get(url, headers=headers)
+    respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
+    registros_json = respuesta.json()
+
+    return render_template("admins/bajas.html", auth=auth, registros=registros_json, apps=apps_json, titulo="Bajas Aplicativos")
+
+# --------------- Politica ------------------------
 @routes_admins.route("/exentar", methods=["GET","POST"])
 def exentar_bajas():
     """
-        Recibe un archivo de word con apps y cuentas. Se modifica el valor
+        Recibe un archivo de excel con apps y cuentas. Se modifica el valor
         exenta_bajas a true.
     """
     auth = session.get("user")

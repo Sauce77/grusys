@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bajas</title>
+
+    {% include "componentes/_bootstrap.html" %}
+
+    <!-- Datatables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+</head>
+<body>
+    
+    {% include "componentes/_navbar.html" %}
+    {% include "componentes/_offcanvas.html" %}
+
+    <div class="container w-75">
+      <h2 class="my-3">{{ titulo }}</h2>
+
+      <!-- Dropdown aplicativos -->
+      <div class="dropdown my-2">
+        <a class="btn btn-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Aplicativo
+        </a>
+      
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="{{ url_for('admins.mostrar_bajas') }}">Todos</a></li>
+          {% for app in apps %}
+            <li><a class="dropdown-item" href="{{ url_for('admins.mostrar_bajas_app',app=app.nombre) }}">{{ app.nombre }}</a></li>
+          {% endfor %}
+        </ul>
+      </div><!-- fin dropdown aplicativos -->
+
+      <table id="tablaExtraccion" class="stripe">
+          <thead>
+              <tr>
+                  <th>App</th>
+                  <th>Nombre</th>
+                  <th>Usuario</th>
+                  <th>Estatus</th>
+                  <th>Perfil</th>
+                  <th>Fecha Creacion</th>
+                  <th>Ultimo Acceso</th>
+                  <th>Responsable</th>
+                  <th>Requiere Acceso</th>
+                  <th>Comentarios</th>
+              </tr>
+          </thead>
+          <tbody>
+          </tbody>
+      </table>
+
+  </div><!-- fin container -->
+
+    <!-- datatables -->
+    <!--  Cargar datos para tabla -->
+    <script>
+      var datosJSON = '{{ registros | tojson | safe }}';
+    </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='scripts/admins/table_extraccion.js') }}"></script>
+
+</body>
+</html>
