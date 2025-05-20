@@ -1,11 +1,13 @@
+import io
 import os
 import requests
-from flask import Blueprint,render_template,request, current_app, redirect, jsonify, session, url_for
+from flask import Blueprint,render_template,request, current_app, redirect, jsonify, session, url_for, send_file
 from werkzeug.utils import secure_filename
 
 from forms import SubirExtraccionForm
 from scripts.extracciones import archivo_extraccion_json, archivo_exentas_json
 from scripts.uploads import subir_archivo
+from scripts.bajas import obtener_bajas_excel
 
 routes_admins = Blueprint("admins", __name__)
 
@@ -124,6 +126,7 @@ def subir_extraccion():
 
     return render_template('admins/subir_extraccion.html', form=form, auth=auth, messages=messages)
 
+# --------------------- Bajas ----------------------------
 
 @routes_admins.route("/bajas", methods=["GET", "POST"])
 def mostrar_bajas():
@@ -134,10 +137,6 @@ def mostrar_bajas():
 
     if not auth:
         return redirect(url_for('login_user'))
-    
-    # obtenemos el username de la sesion actual
-    data_usuario = auth.get("user")
-    username = data_usuario.get("username")
 
     # cabecera utilizada para la peticion
     headers = {
@@ -186,6 +185,44 @@ def mostrar_bajas_app(app):
     registros_json = respuesta.json()
 
     return render_template("admins/bajas.html", auth=auth, registros=registros_json, apps=apps_json, titulo="Bajas Aplicativos")
+
+@routes_admins.route("/descargar/bajas")
+def descargar_bajas_excel():
+    """
+        Descarga la informacion de bajas a excel
+    """
+
+    auth = session.get("user")
+
+    if not auth:
+        return redirect(url_for('login_user'))
+    
+    # cabecera utilizada para la peticion
+    headers = {
+        'Authorization': f'Token {auth["token"]}'
+    }
+
+    # peticion para registros
+    url = API_URL_EXTRACCION + "bajas/"
+    respuesta = requests.get(url, headers=headers)
+    respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
+    bajas_json = respuesta.json()
+
+    # guardamos el archivo a generar en memoria
+    output = io.BytesIO()
+
+    try:
+        output = obtener_bajas_excel(bajas_json)
+            
+        return send_file(
+            output,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            download_name='Bajas.xlsx'
+        )
+
+    except Exception as e:
+        return f"Hubo un error al descargar: {e}"
 
 # --------------- Politica ------------------------
 @routes_admins.route("/exentar", methods=["GET","POST"])

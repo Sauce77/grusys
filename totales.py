@@ -80,7 +80,7 @@ def mostrar_app_totales(app):
     return render_template("totales/mostrar_totales.html",auth=auth,apps=apps_json,total_app=json_total_app,totales=json_totales_res,app=app)
 
 
-@routes_totales.route("/descargar")
+@routes_totales.route("/descargar/totales")
 def descargar_excel():
     """
         Convierte la informacion JSON de totales 
@@ -101,9 +101,6 @@ def descargar_excel():
     respuesta = requests.get(url, headers=headers)
     respuesta.raise_for_status()  # Lanza una excepción para códigos de error 4xx o 5xx
     registros_json = respuesta.json()
-
-    # guardamos el archivo a generar en memoria
-    output = io.BytesIO()
 
     try:
         output = obtener_totales_excel(registros_json)
