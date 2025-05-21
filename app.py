@@ -4,9 +4,9 @@ import json
 from flask import Flask, render_template, jsonify, request, redirect, session, url_for
 from forms import LoginForm
 
-from admins import routes_admins
-from certificacion import routes_certificacion
-from totales import routes_totales
+from endpoints.admins import routes_admins
+from endpoints.certificacion import routes_certificacion
+from endpoints.totales import routes_totales
 
 API_URL = "https://grc-api.onrender.com/"
 
