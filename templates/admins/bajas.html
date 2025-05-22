@@ -30,9 +30,9 @@
               </a>
             
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{{ url_for('admins.mostrar_todos_registros') }}">Todos</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('admins.mostrar_bajas') }}">Todos</a></li>
                 {% for app in apps %}
-                  <li><a class="dropdown-item" href="{{ url_for('admins.mostrar_app_registros',app=app.nombre) }}">{{ app.nombre }}</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('admins.mostrar_bajas_app',app=app.nombre) }}">{{ app.nombre }}</a></li>
                 {% endfor %}
               </ul>
             </div> <!-- fin dropdown aplicativos -->

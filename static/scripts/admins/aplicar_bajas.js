@@ -1,5 +1,6 @@
 var authJSON = JSON.parse(authJSON);
-var datosJavaScript = JSON.parse(datosJSON);
+
+var jsonData = JSON.parse(datosJSON);
 
 $(document).ready(function(){
 
@@ -7,23 +8,23 @@ $(document).ready(function(){
 
         // credenciales
         actToken = authJSON.token;
-        console.log(datosJavaScript)
+        console.log(jsonData)
 
         //enviar peticion
-        fetch('https://grc-api.onrender.com/extraccion/borrar/', {
-            method: 'DELETE',
+        fetch('https://grc-api.onrender.com/extraccion/batch/', {
+            method: 'POST',
             headers: {
               'Accept': '*/*',
               'Content-Type': 'application/json',
               'Authorization': `Token ${actToken}`
             },
-            body: datosJavaScript
+            body: JSON.stringify(jsonData)
           })
             .then(response => {
               if (!response.ok) {
                 throw new Error(`Error en la petición: ${response.status}`);
               }
-              return response.json();
+              return response.body;
             })
             .then(data => {
               console.log('Registros Eliminados.', data);

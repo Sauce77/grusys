@@ -42,7 +42,7 @@ def obtener_bajas_excel(bajas_json):
         hoja.write(3, 5, "Reporte de Bajas", formatos["titulo2"])
 
         # obtenemos dataframe del app
-        df_bajas_app = df_bajas[df_bajas["app"] == app]
+        df_bajas_app = df_bajas[df_bajas["app"] == app].reset_index(drop=True)
 
         # agregamos nombres de las columnas
         nombres_columnas = ["APP", "Nombre", "Usuario", "Estatus", "Perfil", "Fecha Creacion", "Ultimo Acceso", "Responsable", "Requiere Acceso", "Comentarios"]
@@ -65,17 +65,26 @@ def obtener_bajas_excel(bajas_json):
                 # convertimos el nombre de la columna al de dataframe
                 nombre_columna_df = columna.replace(" ","_").lower()
 
-                # actualizamos el ancho de la columna
-                if ancho_columna[index_columna] < len(fila[nombre_columna_df]):
-                    ancho_columna[index_columna] = len(fila[nombre_columna_df])
+                # si hay valor para la columna
+                if fila[nombre_columna_df]:
 
-                # ingresamos datos de la fila
-                hoja.write(5 + index_fila, index_columna, fila[nombre_columna_df], formatos["baja"])
-        
+                    # actualizamos el ancho de la columna
+                    if fila[nombre_columna_df] and ancho_columna[index_columna] < len(fila[nombre_columna_df]):
+                        ancho_columna[index_columna] = len(fila[nombre_columna_df])
+
+                    # ingresamos datos de la fila
+                    hoja.write(5 + index_fila, index_columna, fila[nombre_columna_df], formatos["baja"])
+                else: 
+                    # si no hay valor para la columna
+                    hoja.write(5 + index_fila, index_columna, "No disponible", formatos["baja"])
+
         # actualizamos los anchos de columnas
         for index, ancho in enumerate(ancho_columna):
             # ajustamos ancho de columna titulos
             hoja.set_column(index,index,ancho + 7)
+
+        # aplicamos filtros a las columnas
+        hoja.autofilter(4, 0, 4 + df_bajas_app.shape[0]-1, df_bajas_app.shape[1]-1)
 
     libro.close()
 
