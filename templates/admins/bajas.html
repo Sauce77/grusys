@@ -20,19 +20,33 @@
     <div class="container w-75">
       <h2 class="my-3">{{ titulo }}</h2>
 
-      <!-- Dropdown aplicativos -->
-      <div class="dropdown my-2">
-        <a class="btn btn-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Aplicativo
-        </a>
+      <div class="row my-3">
+
+        <div class="col-lg-2">
+            <!-- Dropdown aplicativos -->
+            <div class="dropdown">
+              <a class="btn btn-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Aplicativo
+              </a>
+            
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ url_for('admins.mostrar_todos_registros') }}">Todos</a></li>
+                {% for app in apps %}
+                  <li><a class="dropdown-item" href="{{ url_for('admins.mostrar_app_registros',app=app.nombre) }}">{{ app.nombre }}</a></li>
+                {% endfor %}
+              </ul>
+            </div> <!-- fin dropdown aplicativos -->
+
+            
+        </div>
+        
+        <div class="col-lg-4">
+          <button class="btn btn-danger" id="btnBajas">Aplicar Bajas</button>
+        </div>
+
+      </div><!-- fin div botones -->
       
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="{{ url_for('admins.mostrar_bajas') }}">Todos</a></li>
-          {% for app in apps %}
-            <li><a class="dropdown-item" href="{{ url_for('admins.mostrar_bajas_app',app=app.nombre) }}">{{ app.nombre }}</a></li>
-          {% endfor %}
-        </ul>
-      </div><!-- fin dropdown aplicativos -->
+
 
       <table id="tablaExtraccion" class="stripe">
           <thead>
@@ -60,8 +74,9 @@
     <!--  Cargar datos para tabla -->
     <script>
       var datosJSON = '{{ registros | tojson | safe }}';
+      var authJSON = '{{ auth | tojson | safe }}';
     </script>
     <script type="text/javascript" src="{{ url_for('static', filename='scripts/admins/table_extraccion.js') }}"></script>
-
+    <script type="text/javascript" src="{{ url_for('static', filename='scripts/admins/aplicar_bajas.js') }}"></script>
 </body>
 </html>
